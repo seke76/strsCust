@@ -5,6 +5,7 @@ import java.sql.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,72 +19,69 @@ public class Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected String myParam = null;
 
-	//private DataSource dataSource;
 	private Connection connection;
-	//private Statement statement;
-	String url = "jdbc:mysql://localhost:3306/strstest";		
-
+	
 	public Servlet() {
 		super();
 	}
 
 
 	public void init(ServletConfig config) throws ServletException {
+		
 		System.out.println("Servlet initilated");
 
 		this.myParam = config.getInitParameter("myParam");
 
-
-
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection(url,"root", "");
-		} catch (ClassNotFoundException | SQLException e) {
+		DataManager datamanager = new DataManager();
+		
+		ServletContext context = config.getServletContext();
+		context.setAttribute("base", config.getInitParameter("base"));
+		context.setAttribute("imageURL", config.getInitParameter("imageURL"));
+		context.setAttribute("dataManager", datamanager);
+		
+/*		try {
+			connection = datamanager.getConnection("mssql");
+			//datamanager.closeConnection(connection);
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}
-
-
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} */
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		System.out.println("doGet");
 
-		ResultSet rs;
+		ResultSet rs=null;
+		String con;
 
-
-
-		try {
-			System.out.println("URL: " + url);
-			System.out.println("Connection: " + connection);
-
-			Statement statement = connection.createStatement();
-			//statement.executeUpdate("CREATE TABLE myTable(test_id int," +
-			//		"test_val char(15) not null)");
-
-			rs = statement.executeQuery("SELECT * " +
-					"from cows ORDER BY age");
-
-			System.out.println("Display all results:");
-
-			while(rs.next()){
-				String cowName= rs.getString("name");
-				int cowAge = rs.getInt("age");
-				System.out.println("\tCow= " + cowName
-						+ "\tage = " + cowAge);
-			}//end while loop
-
-			connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if(connection == null) {
+			System.out.println("No database established");
+			con = "No";
 		}
+		else {
+			System.out.println("Database connection established");
+			con = "Yes";
+			try {
+
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 
 		/*response.getWriter().write("<html><body>myParam = " +
 				this.myParam + "</body></html>");
-*/
+		 */
 		
+		
+		request.setAttribute("connection", con);
+		request.setAttribute("resultset", rs);
 		RequestDispatcher view = request.getRequestDispatcher("/jsp/index.jsp");
-	    view.forward(request, response);
+		view.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
