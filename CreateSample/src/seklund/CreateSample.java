@@ -12,15 +12,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 public class CreateSample {
 
 	public static String outputPath;
 	public static int outputCounter;
-	
+
 	public static void main(String[] args) throws ParserConfigurationException {
-		
+
 		// Read config file -> outputPath, docNr
 		readConfig();
 		System.out.println(">>>> path: " + outputPath);
@@ -31,7 +32,8 @@ public class CreateSample {
 		// write the updated docNr to config file
 
 		int sumOutputFiles = 2;	// how many sample files will be created
-		for(int x = 1; x <= sumOutputFiles; x++) {
+		int x;
+		for(x = 1; x <= sumOutputFiles; x++) {
 			System.out.println("loop x: " + x + ", sumFiles: " + sumOutputFiles);
 
 			try {
@@ -44,7 +46,7 @@ public class CreateSample {
 				e.printStackTrace();
 			}
 		}
-		//writeConfig(x+outputCounter);
+		writeConfig(String.valueOf(x+outputCounter));
 	}
 
 
@@ -67,12 +69,12 @@ public class CreateSample {
 			File fXmlFile = new File("Config/config.xml");
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc;
-			doc = dBuilder.parse(fXmlFile);
+			Document doc = dBuilder.parse(fXmlFile);
+
 			outputPath = doc.getElementsByTagName("outputPath").item(0).getTextContent();
 			outputCounter = Integer.parseInt(doc.getElementsByTagName("outputCounter").item(0).getTextContent());
-			
-			
+
+
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -80,10 +82,28 @@ public class CreateSample {
 		}
 
 	}
-	
-	public static void writeConfig(int x) {
-		
+
+	public static void writeConfig(String x) {
+
+		try {
+			String filepath = "Config/config.xml";
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder;
+			docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.parse(filepath);
+
+			// Get the outputCounter element by tag name directly
+			Node counterElem = (Node)doc.getElementsByTagName("outputCounter").item(0);
+
+			// update outputCounter attribute
+			counterElem.setTextContent(x);
+
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException | IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 
 }
