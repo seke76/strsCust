@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<config>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><config>
 	<outputPath>d:\streamdata\in\perf\</outputPath>
-	<outputCounter>0</outputCounter>
+	<outputCounter>18</outputCounter>
 </config>

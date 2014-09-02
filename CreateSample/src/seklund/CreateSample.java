@@ -10,6 +10,11 @@ import java.util.UUID;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -24,7 +29,6 @@ public class CreateSample {
 
 		// Read config file -> outputPath, docNr
 		readConfig();
-		System.out.println(">>>> path: " + outputPath);
 		System.out.println(">>>> counter: " + outputCounter);
 		// Do we have any argument?
 		// #1 = no of files to created, if missing create only one file
@@ -39,19 +43,19 @@ public class CreateSample {
 			try {
 				makeFile(x+outputCounter);
 			} catch (FileNotFoundException e) {
-				System.out.println("oj oj");
 				e.printStackTrace();
 			} catch (UnsupportedEncodingException e) {
-				System.out.println("oj oj oj");
 				e.printStackTrace();
 			}
 		}
+		System.out.println(">>>> after loop x: "+x);
 		writeConfig(String.valueOf(x+outputCounter));
 	}
 
 
 	public static boolean makeFile(int x) throws FileNotFoundException, UnsupportedEncodingException {
 
+		System.out.println("MakeFile x:" +x);
 		UUID uuidFileName = UUID.randomUUID();
 
 		PrintWriter writer = new PrintWriter(uuidFileName+".txt", "UTF-8");
@@ -85,6 +89,7 @@ public class CreateSample {
 
 	public static void writeConfig(String x) {
 
+		System.out.println("skriva xmlfilen x:" + x);
 		try {
 			String filepath = "Config/config.xml";
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -98,9 +103,18 @@ public class CreateSample {
 			// update outputCounter attribute
 			counterElem.setTextContent(x);
 
+			// write the content into xml file
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(new File(filepath));
+			transformer.transform(source, result);
+			
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (SAXException | IOException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
 	}
