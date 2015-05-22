@@ -17,13 +17,15 @@
       <h:outputLabel value="Återsökningsnummer" />
       <h:outputLabel value="BgcId" />
       <h:outputLabel value="" />
-      <h:inputText id="trackerid" value="#{earkiv.trackerId}" />
-      <h:inputText id="bgcid" value="#{earkiv.bgcId}" />
-      <h:commandButton action="xxx" value="Sök"/>
+      <h:inputText value="#{controller.search.trackerId}" />
+      <h:inputText value="#{controller.search.bgcId}" />
+      <h:commandButton action="#{controller.search}" value="Sök"/>
       
 </h:panelGrid>
 
      	</h:form>
-
+Återsökningsnummer: #{controller.search.trackerId}
+<br/>
+BgcId: #{controller.search.bgcId}
   </h:body>
 </html>
