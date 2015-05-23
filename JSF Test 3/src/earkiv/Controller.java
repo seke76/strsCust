@@ -16,7 +16,7 @@ public class Controller {
 	private Search search;
 	
 	public Controller() {
-		System.out.println("Controller constructur");
+		System.out.println("Controller constructur ");
 		search = new Search("", "");
 		//documents = new ArrayList<Document>();
 	}
