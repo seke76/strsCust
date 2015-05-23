@@ -9,7 +9,7 @@ public class Search {
 	private String bgcId;
 	
 	public Search(String trackerId, String bgcId) {
-		System.out.println("Search constructur ");
+		System.out.println("Search constructur");
 		this.trackerId = trackerId;
 		this.bgcId = bgcId;
 	}
