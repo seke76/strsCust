@@ -15,6 +15,7 @@ import earkiv.DataManager;
 @SessionScoped
 public class Controller {
 	
+	//Sek01
 	//Db
 	DataManager dataManager = new DataManager();
 	

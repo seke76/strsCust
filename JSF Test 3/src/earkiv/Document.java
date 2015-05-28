@@ -5,6 +5,7 @@ import javax.annotation.ManagedBean;
 @ManagedBean
 public class Document {
 
+	//Sek01
 	private int id;
 	private int inputDeliveryId;
 	private String trackerId;

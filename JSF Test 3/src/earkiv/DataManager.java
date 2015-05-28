@@ -13,6 +13,7 @@ public class DataManager {
 
 	public Connection getConnection(String dbtype) {
 
+		//Sek01
 		Connection connection=null;
 
 		if(dbtype=="mssql"){
