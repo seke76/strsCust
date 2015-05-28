@@ -1,5 +1,7 @@
 package earkiv;
 
+import hello.Todo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +9,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import earkiv.Search;
+import earkiv.DataManager;
 
 @ManagedBean
 @SessionScoped
 public class Controller {
 	
+	//Sek01-2
+	//Db
+	DataManager dataManager = new DataManager();
+	
 	//private List<Document> documents;
+	private ArrayList<Document> documents;
 	private Search search;
 	
 	public Controller() {
@@ -24,9 +32,7 @@ public class Controller {
 		
 	public Search search() {
 		
-		System.out.println("Search");
-		System.out.println(search);
-		
+		documents = dataManager.searchDocuments(dataManager, search);
 		return null;
 	}
 	
@@ -37,5 +43,13 @@ public class Controller {
 
 	public void setSearch(Search search) {
 		this.search = search;
+	}
+	
+	public List<Document> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(ArrayList<Document> documents) {
+		this.documents = documents;
 	}
 }

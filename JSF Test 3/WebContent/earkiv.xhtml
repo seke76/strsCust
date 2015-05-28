@@ -8,7 +8,7 @@
 <title>e-Arkiv</title>
 </head>
    <h:body>
-    	<h2>e-Arkiv Scanning Solution</h2>
+    	<h2>e-Arkiv Scanning Solution - sek01 -2</h2>
     	
     	<h:form>
     	
@@ -24,8 +24,20 @@
 </h:panelGrid>
 
      	</h:form>
-Återsökningsnummer: #{controller.search.trackerId}
-<br/>
-BgcId: #{controller.search.bgcId}
+
+<h:dataTable value="#{controller.documents}" var="document">
+   <h:column>
+      <f:facet name="header">BgcId</f:facet>
+      #{document.bgcId}
+   </h:column>
+   <h:column>
+      <f:facet name="header">TrackerId</f:facet>
+      #{document.trackerId}
+   </h:column>
+
+
+
+</h:dataTable>
+
   </h:body>
 </html>

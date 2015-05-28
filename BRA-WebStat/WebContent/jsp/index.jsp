@@ -23,21 +23,20 @@ String con= (String) request.getAttribute("connection");
 <form method="GET" action='Controller' name="showall">
 <table>
   <tr>
-    <td>Database connection</td>
+    <td>Database connection:</td>
     <td><%=con%></td>
     <td></td>
   </tr> 
   
 </table>
 
-<p><input type="submit" name="delete" value="delete" />&nbsp; 
-   <input type="submit" name="edit" value="edit" />&nbsp; 
-  <input type="reset"
-  value="reset" /></p>
+<p><input type="submit" name="Show youngest" value="Show youngest" />&nbsp; 
+   <input type="submit" name="edit" value="Show oldest" />&nbsp; 
+   <input type="reset" value="Show all cows" /></p>
 </form>
 
 <h2>Cows</h2>
-<table>
+<table border=1>
   <tr>
     <th>Name</th>
     <th>Age</th>
