@@ -18,4 +18,4 @@ Note the use of hello to reference the managed bean Hello.
 If no name is specified in the @ManagedBean annotation,
 the managed bean is always accessed with the first letter of the class name in lowercase. 
 
-Knark
+Knark1
