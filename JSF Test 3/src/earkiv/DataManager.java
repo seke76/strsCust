@@ -1,7 +1,5 @@
 package earkiv;
 
-import hello.Todo;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,15 +11,14 @@ public class DataManager {
 
 	public Connection getConnection(String dbtype) {
 
-		//Sek01-2
 		Connection connection=null;
 
 		if(dbtype=="mssql"){
 			System.out.println(">> mssql");
 			try {
-				String dbUrl = "jdbc:sqlserver://localhost;databaseName=strstest";
+				String dbUrl = "jdbc:sqlserver://localhost;databaseName=earkiv";
 				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-				connection = DriverManager.getConnection (dbUrl, "sa", "Streamserve1");
+				connection = DriverManager.getConnection (dbUrl, "APA", "Streamserve1");
 			}
 
 			catch(ClassNotFoundException e) {
@@ -65,7 +62,7 @@ public class DataManager {
 	public ArrayList<Document> searchDocuments(DataManager dataManager, Search search) {
 		
 		ArrayList<Document> documents = new ArrayList<Document>();
-		Connection connection = dataManager.getConnection("mysql");
+		Connection connection = dataManager.getConnection("mssql");
 		
 		String sql = "SELECT * FROM document";
 		
