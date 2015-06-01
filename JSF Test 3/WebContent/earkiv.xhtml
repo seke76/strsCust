@@ -1,31 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
       xmlns:h="http://java.sun.com/jsf/html">
 <head>
 <title>e-Arkiv</title>
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
 </head>
    <h:body>
-    	<h2>e-Arkiv Scanning Solution - sek01 -2</h2>
-    	
-    	<h:form>
+   
+   <div class="container">
+   
+    <h2>e-Arkiv Scanning Solution</h2>
+
+	<div class="row">
+	<h:form>
     	
     	<h:panelGrid id="panel" columns="3" border="0"
    cellpadding="1" cellspacing="1">
-      <h:outputLabel value="Återsökningsnummer" />
-      <h:outputLabel value="BgcId" />
-      <h:outputLabel value="" />
-      <h:inputText value="#{controller.search.trackerId}" />
-      <h:inputText value="#{controller.search.bgcId}" />
-      <h:commandButton action="#{controller.search}" value="Sök"/>
+			<h:outputLabel value="Återsökningsnummer" />
+      		<h:outputLabel value="BgcId" />
+      		<h:outputLabel value="" />
+      		<h:inputText value="#{controller.search.trackerId}" />
+      		<h:inputText value="#{controller.search.bgcId}" />
+      		<h:commandButton action="#{controller.search}" value="Sök"/>
       
-</h:panelGrid>
+		</h:panelGrid>
 
-     	</h:form>
+		<h:message showSummary="true" showDetail="false"
+					style="color: #d20005;
+		font-family: ’New Century Schoolbook’, serif;
+		font-style: oblique;
+		text-decoration: overline"
+					id="errors1" for="panel" />
 
-<h:dataTable value="#{controller.documents}" var="document">
+	</h:form>
+	</div>
+<p>Hello time to search</p>
+	<div class="row">
+<h:dataTable value="#{controller.documents}" var="document" border="1" rendered="true" cellpadding="0" cellspacing="10">
    <h:column>
       <f:facet name="header">BgcId</f:facet>
       #{document.bgcId}
@@ -35,9 +47,15 @@
       #{document.trackerId}
    </h:column>
 
-
-
 </h:dataTable>
+</div>
 
+	      <hr/>
+
+      <footer>
+        <p> Company 2013</p>
+      </footer>
+      
+      </div>
   </h:body>
 </html>

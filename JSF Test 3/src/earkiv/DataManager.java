@@ -62,7 +62,7 @@ public class DataManager {
 	public ArrayList<Document> searchDocuments(DataManager dataManager, Search search) {
 		
 		ArrayList<Document> documents = new ArrayList<Document>();
-		Connection connection = dataManager.getConnection("mssql");
+		Connection connection = dataManager.getConnection("mysql");
 		
 		String sql = "SELECT * FROM document";
 		
