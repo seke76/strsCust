@@ -4,15 +4,15 @@
       xmlns:h="http://java.sun.com/jsf/html">
 <head>
 <title>e-Arkiv</title>
-<link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
+<!-- <link href="bootstrap/css/bootstrap.css" rel="stylesheet" /> -->
 </head>
    <h:body>
    
-   <div class="container">
+   <div>
    
     <h2>e-Arkiv Scanning Solution</h2>
 
-	<div class="row">
+	<div>
 	<h:form>
     	
     	<h:panelGrid id="panel" columns="3" border="0"
@@ -35,9 +35,11 @@
 
 	</h:form>
 	</div>
-<p>Hello time to search</p>
-	<div class="row">
-<h:dataTable value="#{controller.documents}" var="document" border="1" rendered="true" cellpadding="0" cellspacing="10">
+
+	<p>#{controller.message}</p>
+	
+	<div>
+<h:dataTable value="#{controller.documents}" var="document" border="1" rendered="true" cellpadding="5" cellspacing="0">
    <h:column>
       <f:facet name="header">BgcId</f:facet>
       #{document.bgcId}
@@ -46,7 +48,19 @@
       <f:facet name="header">TrackerId</f:facet>
       #{document.trackerId}
    </h:column>
-
+   <h:column>
+      <f:facet name="header">Fakturanummer</f:facet>
+      #{document.invoiceNumber}
+   </h:column>
+   <h:column>
+      <f:facet name="header">OCR</f:facet>
+      #{document.OCR}
+   </h:column>
+   <h:column>
+      <f:facet name="header">Belopp</f:facet>
+      #{document.totalAmount}
+   </h:column>
+      
 </h:dataTable>
 </div>
 

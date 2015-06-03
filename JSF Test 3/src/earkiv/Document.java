@@ -5,11 +5,13 @@ import javax.annotation.ManagedBean;
 @ManagedBean
 public class Document {
 
-	//Sek01-2
 	private int id;
 	private int inputDeliveryId;
 	private String trackerId;
 	private String bgcId;
+	private String invoiceNumber;
+	private String OCR;
+	private String totalAmount;
 
 	public int getId() {
 		return id;
@@ -34,5 +36,23 @@ public class Document {
 	}
 	public void setBgcId(String bgcId) {
 		this.bgcId = bgcId;
+	}
+	public String getInvoiceNumber() {
+		return invoiceNumber;
+	}
+	public void setInvoiceNumber(String invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
+	}
+	public String getOCR() {
+		return OCR;
+	}
+	public void setOCR(String OCR) {
+		this.OCR = OCR;
+	}
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 }

@@ -5,7 +5,6 @@ import javax.annotation.ManagedBean;
 @ManagedBean
 public class Search {
 
-	//Sek01-2
 	private String trackerId;
 	private String bgcId;
 	

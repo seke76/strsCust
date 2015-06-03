@@ -16,9 +16,9 @@ public class DataManager {
 		if(dbtype=="mssql"){
 			System.out.println(">> mssql");
 			try {
-				String dbUrl = "jdbc:sqlserver://localhost;databaseName=earkiv";
+				String dbUrl = "jdbc:sqlserver://SE07334\\SQLEXPRESS;databaseName=earkiv";
 				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-				connection = DriverManager.getConnection (dbUrl, "APA", "Streamserve1");
+				connection = DriverManager.getConnection (dbUrl, "sa", "Streamserve1");
 			}
 
 			catch(ClassNotFoundException e) {
@@ -62,17 +62,17 @@ public class DataManager {
 	public ArrayList<Document> searchDocuments(DataManager dataManager, Search search) {
 		
 		ArrayList<Document> documents = new ArrayList<Document>();
-		Connection connection = dataManager.getConnection("mysql");
+		Connection connection = dataManager.getConnection("mssql");
 		
-		String sql = "SELECT * FROM document";
+		String sql = "SELECT * FROM documents";
 		
 		// Create sql string
 		if(search.getBgcId() !="") {
-			sql = "SELECT * FROM document WHERE bgcId LIKE '" + search.getBgcId() + "%'";
+			sql = "SELECT * FROM documents WHERE bgcId LIKE '" + search.getBgcId() + "%'";
 		}
 		
 		if(search.getTrackerId() !="") {
-			sql = "SELECT * FROM document WHERE trackerId = '" + search.getTrackerId() + "'";
+			sql = "SELECT * FROM documents WHERE trackerId = '" + search.getTrackerId() + "'";
 		}
 		
 		if (connection != null) {
@@ -88,6 +88,9 @@ public class DataManager {
 							Document document = new Document();
 							document.setBgcId(rs.getString("bgcId"));
 							document.setTrackerId(rs.getString("trackerId"));
+							document.setInvoiceNumber(rs.getString("invoiceNumber"));
+							document.setOCR(rs.getString("OCR"));
+							document.setTotalAmount(rs.getString("totalAmount"));
 							//System.out.println("todo: " + todo);
 							documents.add(document);
 						}
