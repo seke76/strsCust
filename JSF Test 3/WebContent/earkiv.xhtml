@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"      
-      xmlns:h="http://java.sun.com/jsf/html">
-<head>
-<title>e-Arkiv</title>
-<!-- <link href="bootstrap/css/bootstrap.css" rel="stylesheet" /> -->
-</head>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+       
+<h:head>
+	<title>e-Arkiv</title>
+</h:head>
    <h:body>
    
    <div>
-   
-    <h2>e-Arkiv Scanning Solution</h2>
-
+   	<div>
+   	 <h2>e-Arkiv Scanning Solution</h2>
+   	 <p:clock pattern="HH:mm:ss dd.MM.yyyy" />
+    </div>
+		
+	
+	<!-- Search form -->
 	<div>
 	<h:form>
-    	
-    	<h:panelGrid id="panel" columns="3" border="0"
+    	<h:panelGrid id="panel" columns="4" border="0"
    cellpadding="1" cellspacing="1">
 			<h:outputLabel value="Återsökningsnummer" />
       		<h:outputLabel value="BgcId" />
+			<h:outputLabel value="Scan datum" />
       		<h:outputLabel value="" />
-      		<h:inputText value="#{controller.search.trackerId}" />
-      		<h:inputText value="#{controller.search.bgcId}" />
+      		<p:inputText size="15" value="#{controller.search.trackerId}" />
+      		<p:inputText size="7" maxlength="8" value="#{controller.search.bgcId}" />
+			<p:inputText size="10" title="När det scannades i Malmö" value="#{controller.search.scanDate}" />
       		<h:commandButton action="#{controller.search}" value="Sök"/>
       
 		</h:panelGrid>
@@ -37,32 +43,38 @@
 	</div>
 
 	<p>#{controller.message}</p>
+	<h:messages>Hello message!!!</h:messages>
 	
+	<!-- Result table -->
 	<div>
-<h:dataTable value="#{controller.documents}" var="document" border="1" rendered="true" cellpadding="5" cellspacing="0">
-   <h:column>
-      <f:facet name="header">BgcId</f:facet>
-      #{document.bgcId}
-   </h:column>
-   <h:column>
-      <f:facet name="header">TrackerId</f:facet>
-      #{document.trackerId}
-   </h:column>
-   <h:column>
-      <f:facet name="header">Fakturanummer</f:facet>
-      #{document.invoiceNumber}
-   </h:column>
-   <h:column>
-      <f:facet name="header">OCR</f:facet>
-      #{document.OCR}
-   </h:column>
-   <h:column>
-      <f:facet name="header">Belopp</f:facet>
-      #{document.totalAmount}
-   </h:column>
-      
-</h:dataTable>
-</div>
+	<h:dataTable value="#{controller.documents}" var="document" border="1" rendered="true" cellpadding="5" cellspacing="0">
+	   <h:column>
+	      <f:facet name="header">BgcId</f:facet>
+	      <p:link action="#{controller.reset}" value="#{document.bgcId}"/>
+	   </h:column>
+	   <h:column>
+	      <f:facet name="header">TrackerId</f:facet>
+	      <h:link action="#{controller.reset}" value="#{document.trackerId}"/>
+	   </h:column>
+	   <h:column>
+	      <f:facet name="header">Fakturanummer</f:facet>
+	      #{document.invoiceNumber}
+	   </h:column>
+	   <h:column>
+	      <f:facet name="header">OCR</f:facet>
+	      #{document.OCR}
+	   </h:column>
+	   <h:column>
+	      <f:facet name="header">Belopp</f:facet>
+	      #{document.totalAmount}
+	   </h:column>
+	   <h:column>
+	      <f:facet name="header">Scan datum</f:facet>
+	      #{document.scanDate}
+	   </h:column>
+
+	</h:dataTable>
+	</div>
 
 	      <hr/>
 

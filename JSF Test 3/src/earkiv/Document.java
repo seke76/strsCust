@@ -1,5 +1,7 @@
 package earkiv;
 
+import java.sql.Date;
+
 import javax.annotation.ManagedBean;
 
 @ManagedBean
@@ -12,6 +14,7 @@ public class Document {
 	private String invoiceNumber;
 	private String OCR;
 	private String totalAmount;
+	private Date scanDate;
 
 	public int getId() {
 		return id;
@@ -54,5 +57,11 @@ public class Document {
 	}
 	public void setTotalAmount(String totalAmount) {
 		this.totalAmount = totalAmount;
+	}
+	public Date getScanDate() {
+		return scanDate;
+	}
+	public void setScanDate(Date scanDate) {
+		this.scanDate = scanDate;
 	}
 }

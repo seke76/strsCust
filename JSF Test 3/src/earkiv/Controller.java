@@ -1,5 +1,6 @@
 package earkiv;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,26 +24,40 @@ public class Controller {
 	
 	public Controller() {
 		System.out.println("Controller constructur");
-		search = new Search("", "");
+		search = new Search("", "", null);
 		//documents = new ArrayList<Document>();
 	}
 	
 		
 	public Search search() {
 		System.out.println("Search method");
-		documents = dataManager.searchDocuments(dataManager, search);
-		System.out.println("list is empty: "+documents.isEmpty());
-		System.out.println(String.valueOf(documents.size()));
-		if(documents.isEmpty()) {
-			message = "Inga dokument känner sig träffade";
+		message = "";
+		
+		try {
+			documents = dataManager.searchDocuments(dataManager, search);
+			System.out.println("list is empty: "+documents.isEmpty());
+			System.out.println(String.valueOf(documents.size()));
+			
+			if(documents.isEmpty()) {
+				message = "Inga dokument känner sig träffade";
+			}
+			else {
+				message="Ett eller flera dokument funna";
+			}
+			
+		} catch (Exception e) {
+			message = "Ingen databas koppling";
+			//e.printStackTrace();
 		}
-		else {
-			message="Ett eller flera dokument funna";
-		}
+
 		return null;
 	}
 	
-
+	public String reset () {
+		System.out.println("Reset");
+		return "reset";
+	}
+	
 	public Search getSearch() {
 		System.out.println("getSearch method");
 		return search;
@@ -68,8 +83,5 @@ public class Controller {
 	
 	public String getMessage() {
 		return message;
-	}
-	public void setMessage(String messge) {
-		this.message= message;
 	}
 }
