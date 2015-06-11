@@ -16,9 +16,9 @@ public class DataManager {
 		if(dbtype=="mssql"){
 			System.out.println(">> mssql");
 			//try {
-				String dbUrl = "jdbc:sqlserver://SE07334\\SQLEXPRESS;databaseName=earkiv";
-				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-				connection = DriverManager.getConnection (dbUrl, "sa", "Streamserve1");
+			String dbUrl = "jdbc:sqlserver://SE07334\\SQLEXPRESS;databaseName=earkiv";
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			connection = DriverManager.getConnection (dbUrl, "sa", "Streamserve1");
 			//}
 
 			//catch(ClassNotFoundException e) {
@@ -34,9 +34,9 @@ public class DataManager {
 		else if(dbtype=="mysql"){
 			System.out.println(">> mysql");
 			//try {
-				String dbUrl = "jdbc:mysql://localhost:3306/earkiv";
-				Class.forName("com.mysql.jdbc.Driver");
-				connection = DriverManager.getConnection(dbUrl,"root", "");
+			String dbUrl = "jdbc:mysql://localhost:3306/earkiv";
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(dbUrl,"root", "");
 			//} catch (Exception e) {
 			//	e.printStackTrace();
 			//	System.out.println("No connection to database - 3");
@@ -58,9 +58,9 @@ public class DataManager {
 			System.out.println("Database closed");
 		}
 	}
-	
+
 	public ArrayList<Document> searchDocuments(DataManager dataManager, Search search) throws Exception {
-		
+
 		ArrayList<Document> documents = new ArrayList<Document>();
 		Connection connection = null;
 
@@ -71,24 +71,29 @@ public class DataManager {
 			//e.printStackTrace();
 			throw new SQLException();
 		}
-		
+
 		String sql = "SELECT * FROM documents";
-		
+
 		// Create sql string
 		if(search.getBgcId() !="") {
 			sql = "SELECT * FROM documents WHERE bgcId LIKE '" + search.getBgcId() + "%'";
 		}
-		
+
 		if(search.getTrackerId() !="") {
-			sql = "SELECT * FROM documents WHERE trackerId = '" + search.getTrackerId() + "'";
+			sql = sql + " AND trackerId = '" + search.getTrackerId() + "'";
 		}
-		
+
+		if(search.getScanDate() !=null) {
+			sql = sql + " AND scanDate = '" + convertUtilToSql(search.getScanDate()) + "'";
+		}
+		System.out.println("SQL: "+sql);
+
 		if (connection != null) {
 
 			Statement statement = connection.createStatement();
 
 			ResultSet rs = statement.executeQuery(sql);
-		
+
 			while (rs.next()) {
 				Document document = new Document();
 				document.setBgcId(rs.getString("bgcId"));
@@ -97,16 +102,23 @@ public class DataManager {
 				document.setOCR(rs.getString("OCR"));
 				document.setTotalAmount(rs.getString("totalAmount"));
 				document.setScanDate(rs.getDate("scanDate"));
-				
+
 				//System.out.println("document: " + document);
 				documents.add(document);
 			}
-				
+
 			rs.close();
 			statement.close();
 			dataManager.closeConnection(connection);
 		}
-	
+
 		return documents;
 	}
+	private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
+
+		java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+		return sDate;
+
+	}
+
 }

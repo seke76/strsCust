@@ -1,8 +1,6 @@
 package earkiv;
 
-
-
-import java.sql.Date;
+import java.util.Date;
 
 import javax.annotation.ManagedBean;
 
@@ -11,9 +9,9 @@ public class Search {
 
 	private String trackerId; 
 	private String bgcId;
-	private String scanDate;
+	private Date scanDate;
 	
-	public Search(String trackerId, String bgcId, String scanDate) {
+	public Search(String trackerId, String bgcId, Date scanDate) {
 		System.out.println("Search constructur??");
 		this.trackerId = trackerId;
 		this.bgcId = bgcId;
@@ -33,10 +31,10 @@ public class Search {
 	public void setBgcId(String bgcId) {
 		this.bgcId = bgcId;
 	}
-	public String getScanDate() {
+	public Date getScanDate() {
 		return scanDate;
 	}
-	public void setScanDate(String scanDate) {
+	public void setScanDate(Date scanDate) {
 		//this.scanDate = Date.valueOf(scanDate);
 		this.scanDate = scanDate;
 	}

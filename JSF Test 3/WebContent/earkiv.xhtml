@@ -12,13 +12,13 @@
    <div>
    	<div>
    	 <h2>e-Arkiv Scanning Solution</h2>
-   	 <p:clock pattern="HH:mm:ss dd.MM.yyyy" />
     </div>
 		
 	
 	<!-- Search form -->
 	<div>
 	<h:form>
+		<p:growl id="msgs" showDetail="true" />
     	<h:panelGrid id="panel" columns="4" border="0"
    cellpadding="1" cellspacing="1">
 			<h:outputLabel value="Återsökningsnummer" />
@@ -26,8 +26,8 @@
 			<h:outputLabel value="Scan datum" />
       		<h:outputLabel value="" />
       		<p:inputText size="15" value="#{controller.search.trackerId}" />
-      		<p:inputText size="7" maxlength="8" value="#{controller.search.bgcId}" />
-			<p:inputText size="10" title="När det scannades i Malmö" value="#{controller.search.scanDate}" />
+      		<p:inputText size="7" maxlength="8" value="#{controller.search.bgcId}" required="false" />
+			<p:calendar size="10" id="popup" pattern="yyyy-MM-dd" value="#{controller.search.scanDate}" />
       		<h:commandButton action="#{controller.search}" value="Sök"/>
       
 		</h:panelGrid>
@@ -43,7 +43,7 @@
 	</div>
 
 	<p>#{controller.message}</p>
-	<h:messages>Hello message!!!</h:messages>
+	 <p:messages id="msgs" />
 	
 	<!-- Result table -->
 	<div>
