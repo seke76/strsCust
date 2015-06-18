@@ -42,7 +42,7 @@ public class Controller {
 				message = "Inga dokument känner sig träffade";
 			}
 			else {
-				message="Ett eller flera dokument funna";
+				message = documents.size()+" dokument funna";
 			}
 			
 		} catch (Exception e) {

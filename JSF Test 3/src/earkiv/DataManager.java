@@ -72,20 +72,33 @@ public class DataManager {
 			throw new SQLException();
 		}
 
+		// Create sql string
 		String sql = "SELECT * FROM documents";
 
-		// Create sql string
 		if(search.getBgcId() !="") {
 			sql = "SELECT * FROM documents WHERE bgcId LIKE '" + search.getBgcId() + "%'";
+
+			if(search.getTrackerId() !="") {
+				sql = sql + " AND trackerId = '" + search.getTrackerId() + "'";
+			}
+
+			if(search.getScanDate() !=null) {
+				sql = sql + " AND scanDate = '" + convertUtilToSql(search.getScanDate()) + "'";
+			}
+		}
+		else if(search.getTrackerId() !="") {
+			sql = "SELECT * FROM documents WHERE trackerId = '" + search.getTrackerId() + "'";
+
+			if(search.getScanDate() !=null) {
+				sql = sql + " AND scanDate = '" + convertUtilToSql(search.getScanDate()) + "'";
+			}
 		}
 
-		if(search.getTrackerId() !="") {
-			sql = sql + " AND trackerId = '" + search.getTrackerId() + "'";
+		else if(search.getScanDate() !=null) {
+			sql = "SELECT * FROM documents WHERE scanDate = '" + convertUtilToSql(search.getScanDate()) + "'";
+
 		}
 
-		if(search.getScanDate() !=null) {
-			sql = sql + " AND scanDate = '" + convertUtilToSql(search.getScanDate()) + "'";
-		}
 		System.out.println("SQL: "+sql);
 
 		if (connection != null) {
@@ -114,6 +127,55 @@ public class DataManager {
 
 		return documents;
 	}
+
+	public void getImage(DataManager dataManager) throws Exception {
+
+		Connection connection = null;
+
+		try {
+			connection = dataManager.getConnection("mssql");
+		} catch (Exception e) {
+			System.out.println("Databas kopplingen sket sig: " + e);
+			throw new SQLException();
+		}
+
+		// Create sql string
+		String sql = "SELECT binaryData FROM docImage WHERE docId='1'";
+		System.out.println("SQL: "+sql);
+
+		if (connection != null) {
+
+			Statement statement = connection.createStatement();
+
+			ResultSet rs = statement.executeQuery(sql);
+
+			byte[] image = null;
+
+			
+			while (rs.next()) {
+				//Document document = new Document();
+				//document.setBgcId(rs.getString("bgcId"));
+				//document.setTrackerId(rs.getString("trackerId"));
+				//	document.setInvoiceNumber(rs.getString("invoiceNumber"));
+				//document.setOCR(rs.getString("OCR"));
+				//document.setTotalAmount(rs.getString("totalAmount"));
+				//document.setScanDate(rs.getDate("scanDate"));
+
+				//System.out.println("document: " + document);
+				//documents.add(document);
+				image = rs.getBytes("binaryDate");
+			}
+
+			rs.close();
+			statement.close();
+			dataManager.closeConnection(connection);
+		}
+
+
+
+
+	}
+
 	private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
 
 		java.sql.Date sDate = new java.sql.Date(uDate.getTime());

@@ -1,87 +1,100 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://java.sun.com/jsf/core"      
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-       
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
 <h:head>
 	<title>e-Arkiv</title>
 </h:head>
-   <h:body>
-   
-   <div>
-   	<div>
-   	 <h2>e-Arkiv Scanning Solution</h2>
-    </div>
-		
-	
-	<!-- Search form -->
-	<div>
-	<h:form>
-		<p:growl id="msgs" showDetail="true" />
-    	<h:panelGrid id="panel" columns="4" border="0"
-   cellpadding="1" cellspacing="1">
-			<h:outputLabel value="Återsökningsnummer" />
-      		<h:outputLabel value="BgcId" />
-			<h:outputLabel value="Scan datum" />
-      		<h:outputLabel value="" />
-      		<p:inputText size="15" value="#{controller.search.trackerId}" />
-      		<p:inputText size="7" maxlength="8" value="#{controller.search.bgcId}" required="false" />
-			<p:calendar size="10" id="popup" pattern="yyyy-MM-dd" value="#{controller.search.scanDate}" />
-      		<h:commandButton action="#{controller.search}" value="Sök"/>
-      
-		</h:panelGrid>
+<h:body>
 
-		<h:message showSummary="true" showDetail="false"
+	<div>
+		<div>
+			<h2>e-Arkiv Scanning Solution</h2>
+		</div>
+
+
+		<!-- Search form -->
+		<div>
+			<h:form>
+				<p:growl id="msgs" showDetail="true" />
+				<h:panelGrid id="panel" columns="4" border="0" cellpadding="1"
+					cellspacing="1">
+					<h:outputLabel value="Återsökningsnummer" />
+					<h:outputLabel value="BgcId" />
+					<h:outputLabel value="Scan datum" />
+					<h:outputLabel value="" />
+					<p:inputText size="15" value="#{controller.search.trackerId}" />
+					<p:inputText size="7" maxlength="8"
+						value="#{controller.search.bgcId}" required="false" />
+					<p:calendar size="10" id="popup" pattern="yyyy-MM-dd"
+						value="#{controller.search.scanDate}" />
+					<h:commandButton action="#{controller.search}" value="Sök" />
+
+				</h:panelGrid>
+
+				<h:message showSummary="true" showDetail="false"
 					style="color: #d20005;
 		font-family: ’New Century Schoolbook’, serif;
 		font-style: oblique;
 		text-decoration: overline"
 					id="errors1" for="panel" />
 
-	</h:form>
-	</div>
+			</h:form>
+		</div>
 
-	<p>#{controller.message}</p>
-	 <p:messages id="msgs" />
-	
-	<!-- Result table -->
-	<div>
-	<h:dataTable value="#{controller.documents}" var="document" border="1" rendered="true" cellpadding="5" cellspacing="0">
-	   <h:column>
-	      <f:facet name="header">BgcId</f:facet>
-	      <p:link action="#{controller.reset}" value="#{document.bgcId}"/>
-	   </h:column>
-	   <h:column>
-	      <f:facet name="header">TrackerId</f:facet>
-	      <h:link action="#{controller.reset}" value="#{document.trackerId}"/>
-	   </h:column>
-	   <h:column>
-	      <f:facet name="header">Fakturanummer</f:facet>
+		<p>#{controller.message}</p>
+		<p:messages id="msgs" />
+		<a href="docview.xhtml" target="_blank">View document</a>
+		<!-- target: _blank (new window), _self (open in same frame, this is default), _parent (open in parent frame), _top (open in full body of the window, i e breaks out of frame), framename -->
+
+
+		<!-- Result table -->
+		<div>
+			<p:dataTable id="basicDT" value="#{controller.documents}"
+				var="document" border="1" rendered="true" cellpadding="5"
+				cellspacing="0">
+				<p:column>
+					<f:facet name="header">BgcId</f:facet>
+	      #{document.bgcId}
+	   </p:column>
+				<p:column>
+					<f:facet name="header">TrackerId</f:facet>
+	      
+	      #{document.trackerId}
+	   </p:column>
+				<p:column>
+					<f:facet name="header">Fakturanummer</f:facet>
 	      #{document.invoiceNumber}
-	   </h:column>
-	   <h:column>
-	      <f:facet name="header">OCR</f:facet>
+	   </p:column>
+				<p:column>
+					<f:facet name="header">OCR</f:facet>
 	      #{document.OCR}
-	   </h:column>
-	   <h:column>
-	      <f:facet name="header">Belopp</f:facet>
+	   </p:column>
+				<p:column>
+					<f:facet name="header">Belopp</f:facet>
 	      #{document.totalAmount}
-	   </h:column>
-	   <h:column>
-	      <f:facet name="header">Scan datum</f:facet>
+	   </p:column>
+				<p:column>
+					<f:facet name="header">Scan datum</f:facet>
 	      #{document.scanDate}
-	   </h:column>
+	   </p:column>
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton icon="ui-icon-search" title="View">
+						<f:setPropertyActionListener value="#{document}" target="#" />
+					</p:commandButton>
+				</p:column>
 
-	</h:dataTable>
+			</p:dataTable>
+		</div>
+
+		<hr />
+
+		<footer>
+			<p>Company 2013</p>
+		</footer>
+
 	</div>
-
-	      <hr/>
-
-      <footer>
-        <p> Company 2013</p>
-      </footer>
-      
-      </div>
-  </h:body>
+</h:body>
 </html>
