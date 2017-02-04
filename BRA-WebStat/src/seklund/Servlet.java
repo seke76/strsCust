@@ -54,23 +54,7 @@ public class Servlet extends HttpServlet {
 		System.out.println("doGet");
 
 		ResultSet rs=null;
-		String con;
-
-		if(connection == null) {
-			System.out.println("No database established");
-			con = "No";
-		}
-		else {
-			System.out.println("Database connection established");
-			con = "Yes";
-			try {
-
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		}
+		String con="Not sure";
 
 
 		/*response.getWriter().write("<html><body>myParam = " +

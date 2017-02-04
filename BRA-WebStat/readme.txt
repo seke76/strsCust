@@ -1,5 +1,5 @@
-Anv�nde denna som en f�r att bygga en prototyp till ett webgr�nssnitt f�r att h�mta statistik fr�n en databas.
-Kom inte speciellt l�ngt, en servlet class, datamanger och jsp. Lite MVC, dock s� gillar jag verkligen inte jsp har jag kommit fram till, man �r ganska l�st i det.
+Använde denna som en för att bygga en prototyp till ett webgränssnitt för att hämta statistik från en databas.
+Kom inte speciellt långt, en servlet class, datamanger och jsp. Lite MVC, dock så gillar jag verkligen inte jsp har jag kommit fram till, man är ganska låst i det.
 
 How to run:
 
