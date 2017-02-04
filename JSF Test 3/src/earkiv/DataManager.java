@@ -9,38 +9,38 @@ import java.util.ArrayList;
 
 public class DataManager {
 
-	public Connection getConnection(String dbtype) {
+	public Connection getConnection(String dbtype) throws Exception {
 
 		Connection connection=null;
 
 		if(dbtype=="mssql"){
 			System.out.println(">> mssql");
-			try {
-				String dbUrl = "jdbc:sqlserver://localhost;databaseName=earkiv";
-				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-				connection = DriverManager.getConnection (dbUrl, "APA", "Streamserve1");
-			}
+			//try {
+			String dbUrl = "jdbc:sqlserver://SE07334\\SQLEXPRESS;databaseName=earkiv";
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			connection = DriverManager.getConnection (dbUrl, "sa", "Streamserve1");
+			//}
 
-			catch(ClassNotFoundException e) {
-				e.printStackTrace();
-				System.out.println("No connection to database - 1");
-			}
+			//catch(ClassNotFoundException e) {
+			//	e.printStackTrace();
+			//	System.out.println("No connection to database - 1");
+			//}
 
-			catch(SQLException e) {
-				e.printStackTrace();
-				System.out.println("No connection to database - 2");
-			}
+			//catch(SQLException e) {
+			//	e.printStackTrace();
+			//	System.out.println("No connection to database - 2");
+			//}
 		}
 		else if(dbtype=="mysql"){
 			System.out.println(">> mysql");
-			try {
-				String dbUrl = "jdbc:mysql://localhost:3306/earkiv";
-				Class.forName("com.mysql.jdbc.Driver");
-				connection = DriverManager.getConnection(dbUrl,"root", "");
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("No connection to database - 3");
-			}
+			//try {
+			String dbUrl = "jdbc:mysql://localhost:3306/earkiv";
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(dbUrl,"root", "");
+			//} catch (Exception e) {
+			//	e.printStackTrace();
+			//	System.out.println("No connection to database - 3");
+			//}
 		}
 
 		System.out.println(">> connection: " + connection);
@@ -58,56 +58,129 @@ public class DataManager {
 			System.out.println("Database closed");
 		}
 	}
-	
-	public ArrayList<Document> searchDocuments(DataManager dataManager, Search search) {
-		
+
+	public ArrayList<Document> searchDocuments(DataManager dataManager, Search search) throws Exception {
+
 		ArrayList<Document> documents = new ArrayList<Document>();
-		Connection connection = dataManager.getConnection("mysql");
-		
-		String sql = "SELECT * FROM document";
-		
+		Connection connection = null;
+
+		try {
+			connection = dataManager.getConnection("mssql");
+		} catch (Exception e) {
+			System.out.println("Databas kopplingen sket sig: " + e);
+			//e.printStackTrace();
+			throw new SQLException();
+		}
+
 		// Create sql string
+		String sql = "SELECT * FROM documents";
+
 		if(search.getBgcId() !="") {
-			sql = "SELECT * FROM document WHERE bgcId LIKE '" + search.getBgcId() + "%'";
+			sql = "SELECT * FROM documents WHERE bgcId LIKE '" + search.getBgcId() + "%'";
+
+			if(search.getTrackerId() !="") {
+				sql = sql + " AND trackerId = '" + search.getTrackerId() + "'";
+			}
+
+			if(search.getScanDate() !=null) {
+				sql = sql + " AND scanDate = '" + convertUtilToSql(search.getScanDate()) + "'";
+			}
 		}
-		
-		if(search.getTrackerId() !="") {
-			sql = "SELECT * FROM document WHERE trackerId = '" + search.getTrackerId() + "'";
+		else if(search.getTrackerId() !="") {
+			sql = "SELECT * FROM documents WHERE trackerId = '" + search.getTrackerId() + "'";
+
+			if(search.getScanDate() !=null) {
+				sql = sql + " AND scanDate = '" + convertUtilToSql(search.getScanDate()) + "'";
+			}
 		}
-		
+
+		else if(search.getScanDate() !=null) {
+			sql = "SELECT * FROM documents WHERE scanDate = '" + convertUtilToSql(search.getScanDate()) + "'";
+
+		}
+
+		System.out.println("SQL: "+sql);
+
 		if (connection != null) {
 
-			try {
-				Statement statement = connection.createStatement();
-				
-				try {
+			Statement statement = connection.createStatement();
 
-					ResultSet rs = statement.executeQuery(sql);
-					try {
-						while (rs.next()) {
-							Document document = new Document();
-							document.setBgcId(rs.getString("bgcId"));
-							document.setTrackerId(rs.getString("trackerId"));
-							//System.out.println("todo: " + todo);
-							documents.add(document);
-						}
-					}
-					finally {
-						rs.close();
-					}
-				}
-				finally {
-					statement.close();
-				}
+			ResultSet rs = statement.executeQuery(sql);
+
+			while (rs.next()) {
+				Document document = new Document();
+				document.setBgcId(rs.getString("bgcId"));
+				document.setTrackerId(rs.getString("trackerId"));
+				document.setInvoiceNumber(rs.getString("invoiceNumber"));
+				document.setOCR(rs.getString("OCR"));
+				document.setTotalAmount(rs.getString("totalAmount"));
+				document.setScanDate(rs.getDate("scanDate"));
+
+				//System.out.println("document: " + document);
+				documents.add(document);
 			}
-			catch (SQLException e) {
-				System.out.println("Could not get any cows: " + e.getMessage());
-			}
-			finally {
-				dataManager.closeConnection(connection);
-			}
+
+			rs.close();
+			statement.close();
+			dataManager.closeConnection(connection);
 		}
-		
+
 		return documents;
 	}
+
+	public void getImage(DataManager dataManager) throws Exception {
+
+		Connection connection = null;
+
+		try {
+			connection = dataManager.getConnection("mssql");
+		} catch (Exception e) {
+			System.out.println("Databas kopplingen sket sig: " + e);
+			throw new SQLException();
+		}
+
+		// Create sql string
+		String sql = "SELECT binaryData FROM docImage WHERE docId='1'";
+		System.out.println("SQL: "+sql);
+
+		if (connection != null) {
+
+			Statement statement = connection.createStatement();
+
+			ResultSet rs = statement.executeQuery(sql);
+
+			byte[] image = null;
+
+			
+			while (rs.next()) {
+				//Document document = new Document();
+				//document.setBgcId(rs.getString("bgcId"));
+				//document.setTrackerId(rs.getString("trackerId"));
+				//	document.setInvoiceNumber(rs.getString("invoiceNumber"));
+				//document.setOCR(rs.getString("OCR"));
+				//document.setTotalAmount(rs.getString("totalAmount"));
+				//document.setScanDate(rs.getDate("scanDate"));
+
+				//System.out.println("document: " + document);
+				//documents.add(document);
+				image = rs.getBytes("binaryDate");
+			}
+
+			rs.close();
+			statement.close();
+			dataManager.closeConnection(connection);
+		}
+
+
+
+
+	}
+
+	private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
+
+		java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+		return sDate;
+
+	}
+
 }
