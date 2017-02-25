@@ -7,6 +7,20 @@
 <title>Insert title here</title>
 </head>
 <body>
-index.jsp i rooten
+
+<h2>index.jsp i rooten</h2>
+
+<form action="servlet" method="post">
+<select name="userSelect">
+  <option value="config">Check config</option>
+  <option value="MT">Multi-tenant</option>
+  <option value="tenants">Tenants</option>
+  <option value="app">Applications</option>
+  <option value="nodes">Nodes</option>
+  <option value="docbroker">DocBroker Viewer</option>
+</select>
+<input type="submit" value="Check">
+</form>
+
 </body>
 </html>
