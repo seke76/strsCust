@@ -19,6 +19,7 @@ import seklund.model.Tenant;
 
 @WebServlet("/servlet")
 public class servlet extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 	final static Logger logger = Logger.getLogger(seklund.servlet.class);
        
@@ -44,12 +45,12 @@ public class servlet extends HttpServlet {
 		String forward = "jsp/index.jsp";
 		String action = request.getParameter("action");
 
-		System.out.println("Get action: " + action);
 		logger.info("Get action : " + action);
 		
         if (action.equalsIgnoreCase("tenant")){
+
         	String tenantId = request.getParameter("tenantId");
-            System.out.println("tenantId: " + tenantId);
+    		logger.info("tenantId: " + tenantId);
         	
             datamanager.getTenantResources(connection, tenantId);
             
@@ -77,7 +78,7 @@ public class servlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("DoPost");
+		logger.info("DoPost");
 		String forward = "jsp/index.jsp";
 		
 		ServletContext context = getServletContext();
@@ -87,7 +88,6 @@ public class servlet extends HttpServlet {
 		
 		//get request parameters for userID and password
 		String userSelect = request.getParameter("userSelect");
-		System.out.println("Selection: " + userSelect);
 		logger.info("Posting, userSelection: " + userSelect);
 		
 		String password = context.getInitParameter("dbUserPwd");  

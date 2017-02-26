@@ -27,12 +27,10 @@ public class DataManager {
 	public Connection getConnection() {
 
 		Connection connection = null;
-		System.out.println("getConnection-dbType: " + dbType);
 		logger.info("getConnection-dbType: " + dbType);
 		
 		if(dbType.equals("mssql")) {
 			
-			System.out.println(">> mssql");
 			logger.info(">> mssql");
 			try {
 				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -41,28 +39,29 @@ public class DataManager {
 
 			catch(ClassNotFoundException e) {
 				e.printStackTrace();
-				System.out.println("No connection to database - 1");
 				logger.info("No connection to database - 1: " + e);
+				logger.info(e.getMessage());
 			}
 
 			catch(SQLException e) {
 				e.printStackTrace();
-				System.out.println("No connection to database - 2");
 				logger.info("No connection to database - 2: " + e);
+				logger.info(e.getMessage());
 			}
 		}
 		else if(dbType.equals("mysql")){
-			System.out.println(">> mysql");
+
+			logger.info(">> mysql");
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				connection = DriverManager.getConnection(dbURL,"root", "");
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("No connection to database - 3");
+				logger.info("No connection to database - 3: " + e);
+				logger.info(e.getMessage());
 			}
 		}
 
-		System.out.println(">> connection: " + connection);
 		logger.info("connection: " + connection);
 		return connection;
 	}
@@ -73,15 +72,15 @@ public class DataManager {
 				conn.close();
 			}
 			catch (SQLException e) {
-				System.out.println("DataManager, close connection error");
+				logger.info("DataManager, close connection error: " + e);
 			}
-			System.out.println("Database closed");
+
+			logger.info("Database closed");
 		}
 	}
 
 	public ArrayList<Tenant> getTenants(Connection connection) {
 
-		System.out.println("Datamanager - getTenants");
 		logger.info("Datamanager - getTenants");
 
 		ArrayList<Tenant> tenants = new ArrayList<Tenant>();
@@ -118,7 +117,6 @@ public class DataManager {
 				}
 			}
 			catch (SQLException e) {
-				System.out.println("Could not get any tenants: " + e.getMessage() );
 				logger.info("Could not get any tenants: " + e.getMessage());
 			}
 			finally {
@@ -126,7 +124,6 @@ public class DataManager {
 			}
 		}
 		else {
-			System.out.println("No connection to database, need to re-connect");
 			logger.info("No connection to database, need to re-connect");
 		}
 
