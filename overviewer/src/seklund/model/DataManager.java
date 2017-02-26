@@ -3,11 +3,15 @@ package seklund.model;
 import java.sql.*;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 
 
 
 public class DataManager {
-
+	
+	final static Logger logger = Logger.getLogger(seklund.servlet.class);
+	
 	private String dbType;
 	private String dbURL;
 	private String dbUser;
@@ -24,10 +28,12 @@ public class DataManager {
 
 		Connection connection = null;
 		System.out.println("getConnection-dbType: " + dbType);
-
+		logger.info("getConnection-dbType: " + dbType);
+		
 		if(dbType.equals("mssql")) {
 			
 			System.out.println(">> mssql");
+			logger.info(">> mssql");
 			try {
 				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 				connection = DriverManager.getConnection (dbURL, "sa", "Streamserve1");
@@ -36,11 +42,13 @@ public class DataManager {
 			catch(ClassNotFoundException e) {
 				e.printStackTrace();
 				System.out.println("No connection to database - 1");
+				logger.info("No connection to database - 1: " + e);
 			}
 
 			catch(SQLException e) {
 				e.printStackTrace();
 				System.out.println("No connection to database - 2");
+				logger.info("No connection to database - 2: " + e);
 			}
 		}
 		else if(dbType.equals("mysql")){
@@ -55,6 +63,7 @@ public class DataManager {
 		}
 
 		System.out.println(">> connection: " + connection);
+		logger.info("connection: " + connection);
 		return connection;
 	}
 
@@ -73,6 +82,7 @@ public class DataManager {
 	public ArrayList<Tenant> getTenants(Connection connection) {
 
 		System.out.println("Datamanager - getTenants");
+		logger.info("Datamanager - getTenants");
 
 		ArrayList<Tenant> tenants = new ArrayList<Tenant>();
 
@@ -108,7 +118,8 @@ public class DataManager {
 				}
 			}
 			catch (SQLException e) {
-				System.out.println("Could not get any tenants: " + e.getMessage());
+				System.out.println("Could not get any tenants: " + e.getMessage() );
+				logger.info("Could not get any tenants: " + e.getMessage());
 			}
 			finally {
 				
@@ -116,6 +127,7 @@ public class DataManager {
 		}
 		else {
 			System.out.println("No connection to database, need to re-connect");
+			logger.info("No connection to database, need to re-connect");
 		}
 
 		return tenants;

@@ -78,7 +78,6 @@ public class servlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		System.out.println("DoPost");
-		logger.info("Posting zzz");
 		String forward = "jsp/index.jsp";
 		
 		ServletContext context = getServletContext();
@@ -89,7 +88,7 @@ public class servlet extends HttpServlet {
 		//get request parameters for userID and password
 		String userSelect = request.getParameter("userSelect");
 		System.out.println("Selection: " + userSelect);
-		
+		logger.info("Posting, userSelection: " + userSelect);
 		
 		String password = context.getInitParameter("dbUserPwd");  
 		
