@@ -55,7 +55,7 @@ public class servlet extends HttpServlet {
             datamanager.getTenantResources(connection, tenantId);
             
             forward = "jsp/tenantresources.jsp";
-            //dao.deleteUser(userId);
+         
             //request.setAttribute("users", dao.getAllUsers());
         } else if (action.equalsIgnoreCase("edit")){
             forward = "INSERT_OR_EDIT";

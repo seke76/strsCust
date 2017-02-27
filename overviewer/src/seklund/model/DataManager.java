@@ -132,12 +132,56 @@ public class DataManager {
 	
 	public ArrayList<String> getTenantResources(Connection connection, String tenantId) {
 		
-		ArrayList something = new ArrayList();
-		something.add("jolo");
+		logger.info("Datamanager - getTenantResources");
+		ArrayList<String> tenantresources = new ArrayList<String>();
+
 		
 		
+		if(connection != null) {
+			try {
+				Statement statement = connection.createStatement();
+				String sql = "SELECT resources.ResourceID, resources.DomainID, resources.NodeID, resources.Name, resources.Description, resources.ContentType, resources.StrsType, resources.ContentEncoding, resources.Data, resources.Version, resources.Revision, resources.MD5, resources.CreationDateTime, resources.LastUpdateTime, resources.LogicalID, resources.SoftwareVersion, resources.TenantID FROM resources LEFT JOIN relresourcestenant ON resources.ResourceID=relresourcestenant.ResourceID WHERE relresourcestenant.TenantID='1BDAE524-BB85-3E4A-97F1-87FECB72C8BF'";
+
+				try {
+
+					ResultSet rs = statement.executeQuery(sql);
+
+
+					try {
+						while (rs.next()) {
+							System.out.println("rs: "+ rs.getString(1));
+							System.out.println("rs: "+ rs.getString(2));
+							System.out.println("rs: "+ rs.getString(3));
+						/*
+							TenantResource tenantresource = new TenantResource();
+							tenant.setTenantId(rs.getString(1));
+							tenant.setName(rs.getString(2));
+							tenant.setDescription(rs.getString(3));
+							tenants.add(tenant);
+						*/
+						}
+					}
+					
+					finally {
+						rs.close();
+					}
+				}
+				finally {
+					statement.close();
+				}
+			}
+			catch (SQLException e) {
+				logger.info("Could not get any tenant resources: " + e.getMessage());
+			}
+			finally {
+				
+			}
+		}
+		else {
+			logger.info("No connection to database, need to re-connect");
+		}
 		
-		return something;
+		return tenantresources;
 	}
 
 
