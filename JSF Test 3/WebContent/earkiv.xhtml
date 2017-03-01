@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
@@ -9,12 +10,9 @@
 </h:head>
 <h:body>
 
-	<div>
-		<div>
-			<h2>e-Arkiv Scanning Solution</h2>
-		</div>
-
-
+<ui:composition template="eaTemplate.xhtml">
+	<ui:define name="content">
+	
 		<!-- Search form -->
 		<div>
 			<h:form>
@@ -46,7 +44,7 @@
 
 		<p>#{controller.message}</p>
 		<p:messages id="msgs" />
-		<a href="docview.xhtml" target="_blank">View document</a>
+		<a href="docview.xhtml" target="_self">View document</a>
 		<!-- target: _blank (new window), _self (open in same frame, this is default), _parent (open in parent frame), _top (open in full body of the window, i e breaks out of frame), framename -->
 
 
@@ -89,12 +87,7 @@
 			</p:dataTable>
 		</div>
 
-		<hr />
-
-		<footer>
-			<p>Company 2013</p>
-		</footer>
-
-	</div>
+	</ui:define>
+	</ui:composition>
 </h:body>
 </html>
