@@ -33,7 +33,7 @@
   </context-param>
   <context-param>
     <param-name>dbUserPwd</param-name>
-    <param-value>qwerty</param-value>
+    <param-value></param-value>
   </context-param>
 
 <!--  
